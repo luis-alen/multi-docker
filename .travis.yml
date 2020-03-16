@@ -1,0 +1,22 @@
+sudo: required
+services:
+  - docker
+
+before_install:
+  - docker build -t luisalen/react-test -f ./client/Dockerfile.dev ./client
+
+script:
+  - docker run -e CI=true luisalen/react-test npm test
+
+after_success:
+  - docker build -t luisalen/multi-client ./client
+  - docker build -t luisalen/multi-nginx ./nginx
+  - docker build -t luisalen/multi-server ./server
+  - docker build -t luisalen/multi-worker ./worker
+  # login to docker cli
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  # push the images to do cker hub
+  - docker push luisalen/multi-client
+  - docker push luisalen/multi-nginx
+  - docker push lluisalen/multi-server
+  - docker push luisalen/multi-worker
