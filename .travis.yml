@@ -18,5 +18,5 @@ after_success:
   # push the images to do cker hub
   - docker push luisalen/multi-client
   - docker push luisalen/multi-nginx
-  - docker push lluisalen/multi-server
+  - docker push luisalen/multi-server
   - docker push luisalen/multi-worker
